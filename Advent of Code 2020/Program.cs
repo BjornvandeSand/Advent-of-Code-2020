@@ -71,23 +71,23 @@ namespace Advent_of_Code_2020
 					break;
 
 				case 11:
-					//Console.WriteLine(Puzzle11Part1(puzzleInput));
-					//Console.WriteLine(Puzzle11Part2(puzzleInput) + Environment.NewLine);
+					Console.WriteLine(Puzzle11Part1(puzzleInput));
+					Console.WriteLine(Puzzle11Part2(puzzleInput) + Environment.NewLine);
 					break;
 
 				case 12:
-					//Console.WriteLine(Puzzle12Part1(puzzleInput));
-					//Console.WriteLine(Puzzle12Part2(puzzleInput) + Environment.NewLine);
+					Console.WriteLine(Puzzle12Part1(puzzleInput));
+					Console.WriteLine(Puzzle12Part2(puzzleInput) + Environment.NewLine);
 					break;
 
 				case 13:
-					//Console.WriteLine(Puzzle13Part1(puzzleInput));
-					//Console.WriteLine(Puzzle13Part2(puzzleInput) + Environment.NewLine);
+					Console.WriteLine(Puzzle13Part1(puzzleInput));
+					Console.WriteLine(Puzzle13Part2(puzzleInput) + Environment.NewLine);
 					break;
 
 				case 14:
-					//Console.WriteLine(Puzzle14Part1(puzzleInput));
-					//Console.WriteLine(Puzzle14Part2(puzzleInput) + Environment.NewLine);
+					Console.WriteLine(Puzzle14Part1(puzzleInput));
+					Console.WriteLine(Puzzle14Part2(puzzleInput) + Environment.NewLine);
 					break;
 
 				case 15:
@@ -459,6 +459,7 @@ namespace Advent_of_Code_2020
 
 			return validPassports;
 		}
+
 		static int Puzzle5Part1(string[] input)
 		{
 			int highestSeatID = 0;
@@ -604,6 +605,7 @@ namespace Advent_of_Code_2020
 
 			return counter;
 		}
+
 		static int Puzzle6Part2(string[] input)
 		{
 			int counter = 0;
@@ -650,6 +652,7 @@ namespace Advent_of_Code_2020
 
 			return counter;
 		}
+
 		static int Puzzle7Part1(string[] input)
 		{
 			Dictionary<string, List<string>> rules = new Dictionary<string, List<string>>();
@@ -719,6 +722,7 @@ namespace Advent_of_Code_2020
 
 			return completedSet.Count;
 		}
+
 		static int Puzzle7Part2(string[] input)
 		{
 			Dictionary<string, List<BagInfo>> rules = new Dictionary<string, List<BagInfo>>();
@@ -762,7 +766,7 @@ namespace Advent_of_Code_2020
 
 				foreach (BagInfo bag in bags)
 				{
-					output += RecursionHell(bag.amount, rules[bag.color]);
+					output += RecursionHell(bag.Amount, rules[bag.Color]);
 				}
 
 				output *= number;
@@ -771,6 +775,23 @@ namespace Advent_of_Code_2020
 			}
 
 			return RecursionHell(1, rules["shiny gold"]);
+		}
+
+		class BagInfo
+		{
+			public int Amount { get; }
+			public string Color { get; }
+
+			public BagInfo(int amount, string color)
+			{
+				this.Amount = amount;
+				this.Color = color;
+			}
+
+			public override string ToString()
+			{
+				return Amount + " " + Color + " bags";
+			}
 		}
 		static int Puzzle8Part1(string[] input)
 		{
@@ -888,6 +909,27 @@ namespace Advent_of_Code_2020
 			Console.WriteLine("QUEUE EMPTY. SHOULDN'T HAPPEN!");
 			return -1; //Only reached when queue is empty and a solution should always be reached before that happens 
 		}
+		class SearchTuple
+		{
+			public int accumulator; //Value accumulated in accumulator
+			public int counter; //Which line of the instructions we're on
+			public bool[] executedInstructions; //Keeps track of which lines of the instructions we've already visited
+			public bool correction; //Whether or not a nop/jmp correction has already been made in this branch of the tree
+
+			public SearchTuple(int accumulator, int counter, bool[] executedInstructions, bool correction)
+			{
+				this.accumulator = accumulator;
+				this.counter = counter;
+				this.executedInstructions = executedInstructions;
+				this.correction = correction;
+			}
+
+			public override string ToString()
+			{
+				return "Accumulator: " + accumulator + " Counter:" + counter + " Correction: " + correction;
+			}
+		}
+
 		static long Puzzle9Part1(string[] input)
 		{
 			long[] inputParsed = new long[input.Length - 1];
@@ -897,15 +939,15 @@ namespace Advent_of_Code_2020
 				inputParsed[i] = Convert.ToInt64(input[i]);
 			}
 
-			for(int i = 25; i < inputParsed.Length; i++)
+			for (int i = 25; i < inputParsed.Length; i++)
 			{
 				bool found = false;
 
 				for (int j = i - 25; j < i; j++)
 				{
-					for(int k = i - 24; k < i; k++)
+					for (int k = i - 24; k < i; k++)
 					{
-						if(j != k && inputParsed[j] + inputParsed[k] == inputParsed[i])
+						if (j != k && inputParsed[j] + inputParsed[k] == inputParsed[i])
 						{
 							found = true;
 							break;
@@ -921,6 +963,7 @@ namespace Advent_of_Code_2020
 
 			return 0;
 		}
+
 		static long Puzzle9Part2(string[] input)
 		{
 			long goal = Puzzle9Part1(input);
@@ -944,7 +987,7 @@ namespace Advent_of_Code_2020
 					if (counter == goal)
 					{
 						SortedSet<long> range = new SortedSet<long>();
-						for(int j = i; j < index; j++)
+						for (int j = i; j < index; j++)
 						{
 							range.Add(inputParsed[j]);
 						}
@@ -958,11 +1001,12 @@ namespace Advent_of_Code_2020
 
 			return 0;
 		}
+
 		static int Puzzle10Part1(string[] input)
 		{
 			SortedSet<int> adapters = new SortedSet<int>();
 
-			foreach(string line in input)
+			foreach (string line in input)
 			{
 				adapters.Add(Int32.Parse(line));
 			}
@@ -972,11 +1016,12 @@ namespace Advent_of_Code_2020
 
 			int counter = 0;
 
-			foreach(int adapter in adapters)
+			foreach (int adapter in adapters)
 			{
 				int difference = adapter - counter;
 
-				switch (difference) {
+				switch (difference)
+				{
 					case 1:
 						oneJolts++;
 						break;
@@ -994,47 +1039,859 @@ namespace Advent_of_Code_2020
 
 			return oneJolts * (threeJolts + 1);
 		}
-		static int Puzzle10Part2(string[] input)
+
+		static long Puzzle10Part2(string[] input)
+		{
+			//FIRST WE PREP ALL THE CONNECTIONS
+			//List of all the adapters in ascending numerical order
+			SortedSet<int> adapters = new SortedSet<int>();
+
+			adapters.Add(0);
+			foreach (string line in input)
+			{
+				adapters.Add(Int32.Parse(line));
+			}
+
+			//Array of all the adapters an indexed adapter can be referred to from
+			List<int>[] connections = new List<int>[adapters.Max + 1];
+
+			//Initialize it
+			for (int i = 0; i < connections.Length; i++)
+			{
+				connections[i] = new List<int>();
+			}
+
+			//Create a list for each adapter which lower joltage adapters can connect to it
+			foreach (int adapter in adapters)
+			{
+				for (int i = 1; i <= 3; i++)
+				{
+					int calc = adapter + i;
+
+					if (adapters.Contains(calc))
+					{
+						connections[calc].Add(adapter);
+					}
+				}
+			}
+
+			//Represents the amount of ways an adapter of the indexed joltage can be reached
+			long[] waysToReach = new long[adapters.Max + 1];
+
+			//NOW WE GET TO WORK
+			//Walk through all jolts, ascendingly, until maximum joltage adapter
+			foreach (int jolt in adapters)
+			{
+				//There is an adapter for this joltage, so we should evaluate it
+				if (adapters.Contains(jolt))
+				{
+					//Represents the total number of ways to get to this adapter
+					long sum = 0;
+
+					foreach (int j in connections[jolt])
+					{
+						sum += waysToReach[j];
+					}
+
+					waysToReach[jolt] = Math.Max(1, sum);
+				}
+			}
+
+			/*
+			Console.WriteLine("*TEST*");
+			foreach(int jolt in adapters)
+			{
+				string output = "";
+				
+				if (adapters.Contains(jolt))
+				{
+					foreach (int connection in connections[jolt])
+					{
+						output += connection + " ";
+					}
+					
+					Console.WriteLine(jolt + " joltage adapter is connected from " + output + "and can be reached in " + waysToReach[jolt] + " ways.");
+				}
+			}
+			*/
+
+			return waysToReach[adapters.Max];
+		}
+
+		static long Puzzle11Part1(string[] input)
+		{
+			Grid grid = new Grid(input);
+
+			Console.WriteLine(grid);
+
+			while (grid.update()) { }
+
+			Console.WriteLine(grid);
+
+			return grid.occupiedSeats();
+		}
+
+		static long Puzzle11Part2(string[] input)
+		{
+			Grid2 grid = new Grid2(input);
+
+			Console.WriteLine(grid);
+
+			while (grid.update()) { }
+
+			return grid.occupiedSeats();
+		}
+
+		class Grid
+		{
+			private Location[][] grid;
+			private List<Location> seats;
+			public Grid(string[] input)
+			{
+				//Initializations
+				grid = new Location[input.Length][];
+				seats = new List<Location>();
+
+				for (int x = 0; x < input.Length; x++)
+				{
+					grid[x] = new Location[input[0].Length];
+
+					for (int y = 0; y < input[x].Length; y++)
+					{
+						grid[x][y] = new Location(input[x][y]);
+						if (input[x][y] == 'L')
+						{
+							seats.Add(grid[x][y]);
+						}
+					}
+				}
+
+				//Add neighbours to seats		
+				for (int x = 0; x < input.Length; x++)
+				{
+					for (int y = 0; y < input[0].Length; y++)
+					{
+						if (grid[x][y].State == 'L')
+						{
+							for (int dx = -1; dx <= 1; dx++)
+							{
+								for (int dy = -1; dy <= 1; dy++)
+								{
+									int newIndexX = x + dx;
+									int newIndexY = y + dy;
+
+									if (newIndexX >= 0 && newIndexX < grid.Length && newIndexY >= 0 && newIndexY < grid[0].Length)
+									{
+										if (!(dx == 0 && dy == 0))
+										{
+											if (grid[newIndexX][newIndexY].State == 'L')
+											{
+												grid[x][y].seatNeighbors.Add(grid[newIndexX][newIndexY]);
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			public bool update()
+			{
+				bool changes = false;
+
+				foreach (Location seat in seats)
+				{
+					seat.generateSuccessor();
+				}
+
+				foreach (Location seat in seats)
+				{
+					changes |= seat.update();
+				}
+
+				return changes;
+			}
+
+			public int occupiedSeats()
+			{
+				int counter = 0;
+
+				foreach (Location seat in seats)
+				{
+					if (seat.State == '#')
+					{
+						counter++;
+					}
+				}
+
+				return counter;
+			}
+
+			public override string ToString()
+			{
+				string output = "";
+
+				for (int x = 0; x < grid.Length; x++)
+				{
+					for (int y = 0; y < grid[0].Length; y++)
+					{
+						output += grid[x][y];
+					}
+
+					output += Environment.NewLine;
+				}
+
+				return output;
+			}
+
+			private class Location
+			{
+				public char State { get; set; }
+				public List<Location> seatNeighbors { get; set; }
+				char successorState;
+
+				public Location(char state)
+				{
+					this.State = state;
+					seatNeighbors = new List<Location>();
+				}
+
+				public void generateSuccessor()
+				{
+					int seatedNeighbors = 0;
+					foreach (Location seat in seatNeighbors)
+					{
+						if (seat.State == '#')
+						{
+							seatedNeighbors++;
+						}
+					}
+
+					successorState = State;
+
+					switch (State)
+					{
+						case 'L':
+							if (seatedNeighbors == 0)
+							{
+								successorState = '#';
+							}
+							break;
+
+						case '#':
+							if (seatedNeighbors >= 4)
+							{
+								successorState = 'L';
+							}
+							break;
+
+						default:
+							break;
+					}
+				}
+
+				public bool update()
+				{
+					bool changed = State != successorState;
+					State = successorState;
+
+					return changed;
+				}
+
+				public override string ToString()
+				{
+					return "" + State;
+				}
+			}
+		}
+
+		class Grid2
+		{
+			public Location[][] grid;
+			public List<Location> seats;
+			public Grid2(string[] input)
+			{
+				//Initializations
+				grid = new Location[input.Length][];
+				seats = new List<Location>();
+
+				for (int x = 0; x < input.Length; x++)
+				{
+					grid[x] = new Location[input[0].Length];
+
+					for (int y = 0; y < input[x].Length; y++)
+					{
+						grid[x][y] = new Location(this, input[x][y], x, y);
+						if (input[x][y] != '.')
+						{
+							seats.Add(grid[x][y]);
+						}
+					}
+				}
+			}
+
+			public bool update()
+			{
+				bool changes = false;
+
+				foreach (Location seat in seats)
+				{
+					seat.generateSuccessor();
+				}
+
+				foreach (Location seat in seats)
+				{
+					changes |= seat.update();
+				}
+
+				return changes;
+			}
+
+			public int occupiedSeats()
+			{
+				int counter = 0;
+
+				foreach (Location seat in seats)
+				{
+					if (seat.State == '#')
+					{
+						counter++;
+					}
+				}
+
+				return counter;
+			}
+
+			public override string ToString()
+			{
+				string output = "";
+
+				for (int x = 0; x < grid.Length; x++)
+				{
+					for (int y = 0; y < grid[0].Length; y++)
+					{
+						output += grid[x][y];
+					}
+
+					output += Environment.NewLine;
+				}
+
+				return output;
+			}
+
+			public class Location
+			{
+				public char State { get; set; }
+
+				Grid2 owner;
+				char successorState;
+				int x;
+				int y;
+
+				public Location(Grid2 owner, char state, int x, int y)
+				{
+					this.owner = owner;
+					this.State = state;
+					this.x = x;
+					this.y = y;
+				}
+
+				public void generateSuccessor()
+				{
+					int seatedNeighbors = 0;
+					int newIndexX;
+					int newIndexY;
+
+					//up
+					for (newIndexX = x - 1; newIndexX >= 0; newIndexX--)
+					{
+
+						if (owner.grid[newIndexX][y].State == '#')
+						{
+							seatedNeighbors++;
+							break;
+						}
+
+						if (owner.grid[newIndexX][y].State == 'L')
+						{
+							break;
+						}
+					}
+
+					//up right
+					for (newIndexX = x - 1, newIndexY = y + 1; newIndexX >= 0 & newIndexY < owner.grid[0].Length; newIndexX--, newIndexY++)
+					{
+						if (owner.grid[newIndexX][newIndexY].State == '#')
+						{
+							seatedNeighbors++;
+							break;
+						}
+
+						if (owner.grid[newIndexX][newIndexY].State == 'L')
+						{
+							break;
+						}
+					}
+
+
+					//right
+					for (newIndexY = y + 1; newIndexY < owner.grid[0].Length; newIndexY++)
+					{
+						if (owner.grid[x][newIndexY].State == '#')
+						{
+							seatedNeighbors++;
+							break;
+						}
+
+						if (owner.grid[x][newIndexY].State == 'L')
+						{
+							break;
+						}
+					}
+
+					//right down
+					for (newIndexX = x + 1, newIndexY = y + 1; newIndexX < owner.grid.Length & newIndexY < owner.grid[0].Length; newIndexX++, newIndexY++)
+					{
+						if (owner.grid[newIndexX][newIndexY].State == '#')
+						{
+							seatedNeighbors++;
+							break;
+						}
+
+						if (owner.grid[newIndexX][newIndexY].State == 'L')
+						{
+							break;
+						}
+					}
+
+					//down
+					for (newIndexX = x + 1; newIndexX < owner.grid.Length; newIndexX++)
+					{
+
+						if (owner.grid[newIndexX][y].State == '#')
+						{
+							seatedNeighbors++;
+							break;
+						}
+
+						if (owner.grid[newIndexX][y].State == 'L')
+						{
+							break;
+						}
+					}
+
+					//down left
+					for (newIndexX = x + 1, newIndexY = y - 1; newIndexX < owner.grid.Length & newIndexY >= 0; newIndexX++, newIndexY--)
+					{
+						if (owner.grid[newIndexX][newIndexY].State == '#')
+						{
+							seatedNeighbors++;
+							break;
+						}
+
+						if (owner.grid[newIndexX][newIndexY].State == 'L')
+						{
+							break;
+						}
+					}
+
+					//left
+					for (newIndexY = y - 1; newIndexY >= 0; newIndexY--)
+					{
+
+						if (owner.grid[x][newIndexY].State == '#')
+						{
+							seatedNeighbors++;
+							break;
+						}
+
+						if (owner.grid[x][newIndexY].State == 'L')
+						{
+							break;
+						}
+					}
+
+					//left up
+					for (newIndexX = x - 1, newIndexY = y - 1; newIndexX >= 0 & newIndexY >= 0; newIndexX--, newIndexY--)
+					{
+						if (owner.grid[newIndexX][newIndexY].State == '#')
+						{
+							seatedNeighbors++;
+							break;
+						}
+
+						if (owner.grid[newIndexX][newIndexY].State == 'L')
+						{
+							break;
+						}
+					}
+
+					successorState = State;
+
+					switch (State)
+					{
+						case 'L':
+							if (seatedNeighbors == 0)
+							{
+								successorState = '#';
+							}
+							break;
+
+						case '#':
+							if (seatedNeighbors >= 5)
+							{
+								successorState = 'L';
+							}
+							break;
+
+						default:
+							break;
+					}
+				}
+
+				public bool update()
+				{
+					bool changed = State != successorState;
+					State = successorState;
+
+					return changed;
+				}
+
+				public override string ToString()
+				{
+					return "" + State;
+				}
+			}
+		}
+
+		static int Puzzle12Part1(string[] input)
+		{
+			int posx = 0;
+			int posy = 0;
+			int facing = 90;
+
+			foreach (string line in input)
+			{
+				char instruction = line[0];
+				int amount = Int32.Parse(line.Substring(1, line.Length - 1));
+
+				switch (instruction)
+				{
+					case ('F'):
+						switch (facing)
+						{
+							case (0):
+								posy += amount;
+								break;
+
+							case (90):
+								posx += amount;
+								break;
+
+							case (180):
+								posy -= amount;
+								break;
+
+							case (270):
+								posx -= amount;
+								break;
+
+							default: //Should never happen
+									 //Console.WriteLine("Oy! Hol' up... Unknown facing angle:" + facing);
+								break;
+						}
+						break;
+
+					case ('L'):
+						facing = (facing - amount + 360) % 360;
+						break;
+
+					case ('R'):
+						facing = (facing + amount + 360) % 360;
+						break;
+
+					case ('N'):
+						posy += amount;
+						break;
+
+					case ('E'):
+						posx += amount;
+						break;
+
+					case ('S'):
+						posy -= amount;
+						break;
+
+					case ('W'):
+						posx -= amount;
+						break;
+
+					default: //should never happen
+							 //Console.WriteLine("Oy! Hol' up... Unknown instruction:" + instruction);
+						break;
+				}
+			}
+
+			return Math.Abs(posx) + Math.Abs(posy);
+		}
+
+		static int Puzzle12Part2(string[] input)
+		{
+			int shipPosX = 0;
+			int shipPosY = 0;
+
+			int waypointPosX = 10;
+			int waypointPosY = 1;
+
+			for (int i = 0; i < input.Length; i++)
+			{
+				char instruction = input[i][0];
+				int amount = Int32.Parse(input[i].Substring(1, input[i].Length - 1));
+
+				int tempX;
+
+				switch (instruction)
+				{
+					case ('F'):
+						shipPosX += waypointPosX * amount;
+						shipPosY += waypointPosY * amount;
+						break;
+
+					case ('L'):
+						switch (amount)
+						{
+							case (90)://same as R270
+								tempX = waypointPosX;
+								waypointPosX = waypointPosY * -1;
+								waypointPosY = tempX;
+								break;
+
+							case (180): //same as R180
+								waypointPosX *= -1;
+								waypointPosY *= -1;
+								break;
+
+							case (270)://same as R90
+								tempX = waypointPosX;
+								waypointPosX = waypointPosY;
+								waypointPosY = tempX * -1;
+								break;
+
+							default: //should never happen
+								Console.WriteLine("Oy! Hol' up... Unknown instruction:" + instruction);
+								break;
+						}
+
+						break;
+
+					case ('R'):
+						switch (amount)
+						{
+							case (90)://same as L270
+								tempX = waypointPosX;
+								waypointPosX = waypointPosY;
+								waypointPosY = tempX * -1;
+								break;
+
+							case (180): //same as L180
+								waypointPosX *= -1;
+								waypointPosY *= -1;
+								break;
+
+							case (270)://same as L90
+								tempX = waypointPosX;
+								waypointPosX = waypointPosY * -1;
+								waypointPosY = tempX;
+								break;
+
+							default: //should never happen
+								Console.WriteLine("Oy! Hol' up... Unknown instruction:" + instruction);
+								break;
+						}
+
+						break;
+
+					case ('N'):
+						waypointPosY += amount;
+						break;
+
+					case ('E'):
+						waypointPosX += amount;
+						break;
+
+					case ('S'):
+						waypointPosY -= amount;
+						break;
+
+					case ('W'):
+						waypointPosX -= amount;
+						break;
+
+					default: //should never happen
+						Console.WriteLine("Oy! Hol' up... Unknown instruction:" + instruction);
+						break;
+				}
+
+				/*
+				Console.WriteLine("Line: " + (i + 1));
+				Console.WriteLine("instruction: " + input[i]);
+				Console.WriteLine("Ship location : X" + shipPosX + "/Y" + shipPosY);
+				Console.WriteLine("Waypoint location : X" + waypointPosX + "/Y" + waypointPosY);
+				Console.ReadLine();
+				*/
+			}
+
+			return Math.Abs(shipPosX) + Math.Abs(shipPosY);
+		}
+		static int Puzzle13Part1(string[] input)
+		{
+			int goal = Int32.Parse(input[0]);
+			SortedSet<int> busses = new SortedSet<int>();
+
+			foreach (string bus in input[1].Split(','))
+			{
+				if (bus != "x")
+				{
+					busses.Add(Int32.Parse(bus));
+				}
+			}
+
+			int currentShortestWait = int.MaxValue;
+			int currentBestBus = 0;
+
+			foreach (int i in busses)
+			{
+				int timeLeft = i - (goal % i);
+
+				if (timeLeft < currentShortestWait)
+				{
+					currentShortestWait = timeLeft;
+					currentBestBus = i;
+				}
+			}
+
+			return currentBestBus * currentShortestWait;
+		}
+
+		static ulong Puzzle13Part2(string[] input)
+		{
+			string[] bussesInput = input[1].Split(',');
+			List<ulong> busIndexes = new List<ulong>();
+			List<ulong> busses = new List<ulong>();
+
+			for (ulong i = 0; i < (ulong)bussesInput.Length; i++)
+			{
+				if (bussesInput[i] != "x")
+				{
+					busIndexes.Add(i);
+					busses.Add(UInt64.Parse(bussesInput[i]));
+				}
+			}
+
+			ulong sum = 0;
+			ulong stepsize = 0;
+			ulong currentStep;
+
+			for (int i = 0; i < busses.Count - 1; i++)
+			{
+				stepsize = lcm(busses[i], Math.Max(1, stepsize));
+				for (ulong multitude = 1; true; multitude++)
+				{
+					currentStep = stepsize * multitude;
+
+					if ((sum + currentStep + busIndexes[i + 1]) % busses[i + 1] == 0)
+					{
+						sum += currentStep;
+						break;
+					}
+				}
+			}
+
+			return sum;
+		}
+
+		//https://stackoverflow.com/questions/13569810/least-common-multiple
+		static ulong gcf(ulong a, ulong b)
+		{
+			while (b != 0)
+			{
+				ulong temp = b;
+				b = a % b;
+				a = temp;
+			}
+			return a;
+		}
+
+		//https://stackoverflow.com/questions/13569810/least-common-multiple
+		static ulong lcm(ulong a, ulong b)
+		{
+			return (a / gcf(a, b)) * b;
+		}
+
+		static ulong Puzzle14Part1(string[] input)
+		{
+			Dictionary<long, long> mem = new Dictionary<long, long>();
+
+			string mask = "";
+			
+			foreach(string line in input)
+			{
+				string[] split = line.Split('=');
+
+				if (split[0] == "mask ")
+				{
+					mask = split[1].Substring(1,36);
+				} else
+				{
+					long address = Int64.Parse(split[0].Substring(4,split[0].Length - 6));
+					long value = Int64.Parse(split[1].Substring(1,split[1].Length - 1));
+
+					string binary = Convert.ToString(value, 2);
+					binary = binary.PadLeft(36,'0');
+
+					string output = "";
+
+					for(int i = 0; i < 36; i++)
+					{
+						switch(mask[i])
+						{
+							case '0':
+								output += '0';
+								break;
+
+							case '1':
+								output += '1';
+								break;
+
+							case 'X':
+								output += binary[i];
+								break;
+
+							default:
+								Console.WriteLine("This should never happen.");
+								break;
+						}
+					}
+
+					mem[address] = Convert.ToInt64(output, 2);
+				}
+			}
+
+			ulong counter = 0;
+
+			foreach (KeyValuePair<long, long> entry in mem)
+			{
+				counter += (ulong) entry.Value;
+			}
+
+			return counter;
+		}
+
+		static ulong Puzzle14Part2(string[] input)
 		{
 			return 0;
 		}
-	}
-}
-
-class BagInfo
-{
-	public int amount;
-	public string color;
-
-	public BagInfo(int amount, string color)
-	{
-		this.color = color;
-		this.amount = amount;
-	}
-
-	public override string ToString()
-	{
-		return amount + " " + color + " bags";
-	}
-}
-
-class SearchTuple
-{
-	public int accumulator; //Value accumulated in accumulator
-	public int counter; //Which line of the instructions we're on
-	public bool[] executedInstructions; //Keeps track of which lines of the instructions we've already visited
-	public bool correction; //Whether or not a nop/jmp correction has already been made in this branch of the tree
-
-	public SearchTuple(int accumulator, int counter, bool[] executedInstructions, bool correction)
-	{
-		this.accumulator = accumulator;
-		this.counter = counter;
-		this.executedInstructions = executedInstructions;
-		this.correction = correction;
-	}
-
-	public override string ToString()
-	{
-		return "Accumulator: " + accumulator + " Counter:" + counter + " Correction: " + correction;
 	}
 }
